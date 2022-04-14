@@ -9,17 +9,11 @@ module.exports = require("vscode");
 
 /***/ }),
 /* 2 */
-/***/ ((module) => {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 3 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const fs_1 = __webpack_require__(2);
+const fs_1 = __webpack_require__(3);
 const path_1 = __webpack_require__(4);
 const vscode_1 = __webpack_require__(1);
 const template_1 = __webpack_require__(5);
@@ -69,7 +63,8 @@ class default_1 {
         }
         else {
             const nested = (0, fs_1.readdirSync)(this.curPath);
-            if (nested?.includes(componentName)) {
+            const isDup = nested.some((item) => item.toLowerCase() === componentName.toLowerCase());
+            if (isDup) {
                 vscode_1.window.showErrorMessage('Component duplicated');
             }
             ;
@@ -81,6 +76,12 @@ class default_1 {
 }
 exports["default"] = default_1;
 
+
+/***/ }),
+/* 3 */
+/***/ ((module) => {
+
+module.exports = require("fs");
 
 /***/ }),
 /* 4 */
@@ -106,11 +107,10 @@ const use${componentName} = (props: ReceivedProps) => {
 export type Props = ReturnType<typeof use${componentName}>;
 
 export default use${componentName};
-
 `;
 exports.renderHooks = renderHooks;
-const renderComponents = (componentName) => `import { FC } from "react";
-import useHelloWorld, { Props, ReceivedProps } from "./hook";
+const renderComponents = (componentName) => `import React, { FC } from "react";
+import use${componentName}, { Props, ReceivedProps } from "./hook";
 
 const ${componentName}Layout: FC<Props> = (props) => {
   const {} = props;
@@ -122,7 +122,6 @@ const ${componentName}: FC<ReceivedProps> = (props) => (
 );
 
 export default ${componentName};
-
 `;
 exports.renderComponents = renderComponents;
 
@@ -165,9 +164,9 @@ exports.deactivate = exports.activate = void 0;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = __webpack_require__(1);
-const index_1 = __webpack_require__(3);
-const fs = __webpack_require__(2);
-const path = __webpack_require__(2);
+const index_1 = __webpack_require__(2);
+const fs = __webpack_require__(3);
+const path = __webpack_require__(3);
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {

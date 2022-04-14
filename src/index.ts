@@ -55,9 +55,12 @@ export default class {
       window.showErrorMessage('Please add component name');
     } else {
       const nested: string[] = readdirSync(this.curPath);
-      if (nested?.includes(componentName)) {
+      
+      const isDup = nested.some((item: string) => item.toLowerCase() === componentName.toLowerCase());
+      if (isDup) {
         window.showErrorMessage('Component duplicated');
       };
+      
       mkdirSync(`${this.curPath}/${componentName}`);
       writeFileSync(`${this.curPath}/${componentName}/hook.ts`, renderHooks(componentName));
       writeFileSync(`${this.curPath}/${componentName}/index.tsx`, renderComponents(componentName));

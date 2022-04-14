@@ -10,12 +10,11 @@ const use${componentName} = (props: ReceivedProps) => {
 export type Props = ReturnType<typeof use${componentName}>;
 
 export default use${componentName};
-
 `;
 
 export const renderComponents = (componentName: string) =>
-`import { FC } from "react";
-import useHelloWorld, { Props, ReceivedProps } from "./hook";
+`import React, { FC } from "react";
+import use${componentName}, { Props, ReceivedProps } from "./hook";
 
 const ${componentName}Layout: FC<Props> = (props) => {
   const {} = props;
@@ -27,5 +26,4 @@ const ${componentName}: FC<ReceivedProps> = (props) => (
 );
 
 export default ${componentName};
-
 `;
